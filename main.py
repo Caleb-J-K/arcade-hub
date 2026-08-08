@@ -1,27 +1,37 @@
-# Example file showing a basic pygame "game loop"
 import pygame
+from games.pong.pong import draw_playfield
 
-# pygame setup
-pygame.init()
-screen = pygame.display.set_mode((1280, 720))
-clock = pygame.time.Clock()
-running = True
+SCREEN_WIDTH = 1280
+SCREEN_HEIGHT = 720
+FPS_LIMIT = 60
+BACKGROUND_COLOR = (0, 0, 0)
+ACTIVE_GAME = "Pong"
 
-while running:
-    # poll for events
-    # pygame.QUIT event means the user clicked X to close your window
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+def main():
+    # pygame setup
+    pygame.init()
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    pygame.display.set_caption("Arcade Hub")
+    clock = pygame.time.Clock()
+    running = True
 
-    # fill the screen with a color to wipe away anything from last frame
-    screen.fill("purple")
+    while running:
+        # poll for events
+        # pygame.QUIT event means the user clicked X to close your window
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
 
-    # RENDER YOUR GAME HERE
+        if ACTIVE_GAME == "Pong":
+            draw_playfield(screen)
+        else:
+            screen.fill(BACKGROUND_COLOR)
 
-    # flip() the display to put your work on screen
-    pygame.display.flip()
+        pygame.display.flip()
 
-    clock.tick(60)  # limits FPS to 60
+        clock.tick(FPS_LIMIT)
 
-pygame.quit()
+    pygame.quit()
+
+if __name__ == "__main__":
+    main()
