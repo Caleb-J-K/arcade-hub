@@ -4,7 +4,7 @@ import pygame
 PADDLE_WIDTH = 10 
 PADDLE_HEIGHT = 100
 PADDLE_COLOR = (255, 255, 255)
-PADDLE_SPEED = 240  # Pixels per second
+PADDLE_SPEED = 360  # Pixels per second
 class Paddle:
     def __init__(self, x, y):
         self.x = x

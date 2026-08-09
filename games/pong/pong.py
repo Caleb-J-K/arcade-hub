@@ -7,6 +7,7 @@ PONG_LINE_COLOR = (255, 255, 255)
 PADDLE_X_MARGIN = 50  # Distance from the edge of the screen to the paddle
 PADDLE_Y_BOUNDARY = 20  # Distance from the top and bottom of the screen to the paddle
 PONG_BOUNDARY_THICKNESS = 10  # Thickness of the top and bottom boundaries
+WINNING_SCORE = 5
 
 
 class Pong:
@@ -24,9 +25,13 @@ class Pong:
         self.ball = ball.Ball(ball_x_start, ball_y_start)
         self.left_score = 0
         self.right_score = 0
+        self.score_font = pygame.font.Font(None, 48)
+        self.game_over = False
 
 
     def update(self, delta_time):
+        if self.game_over:
+            return
         left_direction = 0
         right_direction = 0
         keys = pygame.key.get_pressed()
@@ -52,17 +57,27 @@ class Pong:
         if ball_rect.colliderect(left_paddle_rect) and self.ball.speed_x < 0 or ball_rect.colliderect(right_paddle_rect):
             self.ball.speed_x *= -1  # Reverse the horizontal direction of the ball
         if self.ball.x < 0:
-            self.ball.reset_position(self.screen.get_width() // 2, self.screen.get_height() // 2)
+            self.ball.reset_position(self.screen.get_width() // 2, self.screen.get_height() // 2, x_direction=1)
             self.right_score += 1
             print(f"Left: {self.left_score} | Right: {self.right_score}")
+            if self.right_score >= WINNING_SCORE:
+                print("Right player wins!")
+                self.game_over = True
         elif self.ball.x > self.screen.get_width():
-            self.ball.reset_position(self.screen.get_width() // 2, self.screen.get_height() // 2)
+            self.ball.reset_position(self.screen.get_width() // 2, self.screen.get_height() // 2, x_direction=-1)
             self.left_score += 1
             print(f"Left: {self.left_score} | Right: {self.right_score}")
+            if self.left_score >= WINNING_SCORE:
+                print("Left player wins!")
+                self.game_over = True
 
 
     def draw(self):
         draw_playfield(self.screen)
+        left_score_text = self.score_font.render(str(self.left_score), True, PONG_LINE_COLOR)
+        right_score_text = self.score_font.render(str(self.right_score), True, PONG_LINE_COLOR)
+        self.screen.blit(left_score_text, (self.screen.get_width() // 4 - left_score_text.get_width() // 2, 20))
+        self.screen.blit(right_score_text, (3 * self.screen.get_width() // 4 - right_score_text.get_width() // 2, 20))
         self.left_paddle.draw(self.screen)
         self.right_paddle.draw(self.screen)
         self.ball.draw(self.screen)

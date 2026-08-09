@@ -4,7 +4,7 @@ from games.pong.pong import Pong
 
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
-FPS_LIMIT = 60
+FPS_LIMIT = 120
 BACKGROUND_COLOR = (0, 0, 0)
 ACTIVE_GAME = "Pong"
 
