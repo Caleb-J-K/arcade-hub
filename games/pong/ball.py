@@ -16,11 +16,11 @@ class Ball:
     def draw(self, screen):
         pygame.draw.circle(screen, self.color, (int(self.x), int(self.y)), self.radius)
 
-    def move(self, delta_time):
+    def move(self, delta_time): # speed is in pixels per second, so we multiply by delta_time to get the distance to move in this frame
         self.x += self.speed_x * delta_time
         self.y += self.speed_y * delta_time
 
-    def get_rect(self):
+    def get_rect(self): # Returns a pygame.Rect representing the ball's position and size, useful for collision detection
         return pygame.Rect(self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
 
     def reset_position(self, x, y, x_direction):

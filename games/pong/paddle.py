@@ -20,12 +20,14 @@ class Paddle:
 
     def move(self, direction, delta_time, min_y, max_y):
         self.y += direction * self.speed * delta_time
+        
+        # Ensure the paddle stays within the vertical boundaries
         if self.y < min_y:
             self.y = min_y
         elif self.y > max_y:
             self.y = max_y
 
-    def get_rect(self):
+    def get_rect(self): # Returns a pygame.Rect representing the paddle's position and size, useful for collision detection
         return pygame.Rect(self.x, self.y, self.width, self.height)
 
     def reset_position(self, y):

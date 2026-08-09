@@ -29,9 +29,9 @@ def main():
             pong_game.update(delta_time)
             pong_game.draw()
         else:
-            screen.fill(BACKGROUND_COLOR)
+            screen.fill(BACKGROUND_COLOR) # Hub not created yet, so just fill the screen with black
 
-        pygame.display.flip()
+        pygame.display.flip() 
 
     pygame.quit()
 
