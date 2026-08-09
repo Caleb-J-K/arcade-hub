@@ -7,7 +7,7 @@ PONG_LINE_COLOR = (255, 255, 255)
 PADDLE_X_MARGIN = 50  # Distance from the edge of the screen to the paddle
 PADDLE_Y_BOUNDARY = 20  # Distance from the top and bottom of the screen to the paddle
 PONG_BOUNDARY_THICKNESS = 10  # Thickness of the top and bottom boundaries
-WINNING_SCORE = 5
+WINNING_SCORE = 1
 PONG_TEXT_COLOR = (0, 255, 0)
 
 
@@ -28,11 +28,14 @@ class Pong:
         self.right_score = 0
         self.score_font = pygame.font.Font(None, 48)
         self.game_over = False
-        self.winnner = None
+        self.winner = None
 
 
     def update(self, delta_time):
         if self.game_over:
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_SPACE]:
+                self.reset_game()
             return
         left_direction = 0
         right_direction = 0
@@ -56,21 +59,21 @@ class Pong:
         ball_rect = self.ball.get_rect()
         left_paddle_rect = self.left_paddle.get_rect()
         right_paddle_rect = self.right_paddle.get_rect()
-        if ball_rect.colliderect(left_paddle_rect) and self.ball.speed_x < 0 or ball_rect.colliderect(right_paddle_rect):
+        if ball_rect.colliderect(left_paddle_rect) and self.ball.speed_x < 0 or ball_rect.colliderect(right_paddle_rect) and self.ball.speed_x > 0:
             self.ball.speed_x *= -1  # Reverse the horizontal direction of the ball
         if self.ball.x < 0:
             self.ball.reset_position(self.screen.get_width() // 2, self.screen.get_height() // 2, x_direction=1)
             self.right_score += 1
-            print(f"Left: {self.left_score} | Right: {self.right_score}")
+            # print(f"Left: {self.left_score} | Right: {self.right_score}")
             if self.right_score >= WINNING_SCORE:
-                print("Right player wins!")
+                # print("Right player wins!")
                 self.game_over = True
         elif self.ball.x > self.screen.get_width():
             self.ball.reset_position(self.screen.get_width() // 2, self.screen.get_height() // 2, x_direction=-1)
             self.left_score += 1
-            print(f"Left: {self.left_score} | Right: {self.right_score}")
+            #print(f"Left: {self.left_score} | Right: {self.right_score}")
             if self.left_score >= WINNING_SCORE:
-                print("Left player wins!")
+                #print("Left player wins!")
                 self.game_over = True
 
 
@@ -86,8 +89,18 @@ class Pong:
         if self.game_over:
             winner_text = "Left Player Wins!" if self.left_score > self.right_score else "Right Player Wins!"
             winner_surface = self.score_font.render(winner_text, True, PONG_TEXT_COLOR)
-            self.screen.blit(winner_surface, (self.screen.get_width() // 2 - winner_surface.get_width() // 2,
-                                              self.screen.get_height() // 4 - winner_surface.get_height() // 2))
+            self.screen.blit(winner_surface, (self.screen.get_width() // 2 - winner_surface.get_width() // 2, self.screen.get_height() // 4 - winner_surface.get_height() // 2))
+            self.screen.blit(self.score_font.render("Press SPACE to restart", True, PONG_LINE_COLOR), (self.screen.get_width() // 2 - self.score_font.size("Press SPACE to restart")[0] // 2, self.screen.get_height() // 4 + winner_surface.get_height() // 2 + 10))
+
+    
+    def reset_game(self):
+        self.left_score = 0
+        self.right_score = 0
+        self.game_over = False
+        self.winner = None
+        self.ball.reset_position(self.screen.get_width() // 2, self.screen.get_height() // 2, x_direction=1)
+        self.left_paddle.reset_position(self.screen.get_height() // 2 - PADDLE_HEIGHT // 2)
+        self.right_paddle.reset_position(self.screen.get_height() // 2 - PADDLE_HEIGHT // 2)
 
 
 def draw_playfield(screen):
@@ -100,5 +113,3 @@ def draw_playfield(screen):
     # Draw the top and bottom boundaries
     pygame.draw.rect(screen, PONG_LINE_COLOR, (0, 0, screen.get_width(), PONG_BOUNDARY_THICKNESS))  # Top boundary
     pygame.draw.rect(screen, PONG_LINE_COLOR, (0, screen.get_height() - PONG_BOUNDARY_THICKNESS, screen.get_width(), PONG_BOUNDARY_THICKNESS))  # Bottom boundary
-
-
