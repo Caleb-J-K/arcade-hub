@@ -1,6 +1,7 @@
 import pygame
 from games.pong.pong import Pong
 
+
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
 FPS_LIMIT = 60
@@ -16,9 +17,8 @@ def main():
     pong_game = Pong(screen)
     running = True
 
-
-
     while running:
+        delta_time = clock.tick(FPS_LIMIT) / 1000  # Convert milliseconds to seconds
         # poll for events
         # pygame.QUIT event means the user clicked X to close your window
         for event in pygame.event.get():
@@ -26,13 +26,12 @@ def main():
                 running = False
 
         if ACTIVE_GAME == "Pong":
+            pong_game.update(delta_time)
             pong_game.draw()
         else:
             screen.fill(BACKGROUND_COLOR)
 
         pygame.display.flip()
-
-        clock.tick(FPS_LIMIT)
 
     pygame.quit()
 
