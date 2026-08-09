@@ -1,0 +1,21 @@
+import pygame
+
+BALL_RADIUS = 10
+BALL_COLOR = (255, 255, 255)
+BALL_SPEED = 300  # Pixels per second
+
+class Ball:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.radius = BALL_RADIUS
+        self.color = BALL_COLOR
+        self.speed_x = BALL_SPEED
+        self.speed_y = BALL_SPEED
+
+    def draw(self, screen):
+        pygame.draw.circle(screen, self.color, (int(self.x), int(self.y)), self.radius)
+
+    def move(self, delta_time):
+        self.x += self.speed_x * delta_time
+        self.y += self.speed_y * delta_time

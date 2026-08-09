@@ -1,4 +1,5 @@
 import pygame
+from games.pong import ball
 from games.pong.paddle import Paddle, PADDLE_WIDTH, PADDLE_HEIGHT
 
 PONG_BACKGROUND_COLOR = (0, 0, 0)
@@ -17,6 +18,10 @@ class Pong:
         self.right_paddle = Paddle(right_paddle_x, paddle_y)
         self.max_y = screen.get_height() - PADDLE_HEIGHT - PADDLE_Y_BOUNDARY
         self.min_y = PADDLE_Y_BOUNDARY
+        ball_x = screen.get_width() // 2
+        ball_y = screen.get_height() // 2
+        self.ball = ball.Ball(ball_x, ball_y)
+
 
     def update(self, delta_time):
         left_direction = 0
@@ -32,12 +37,17 @@ class Pong:
             right_direction += 1
         self.left_paddle.move(left_direction, delta_time, self.min_y, self.max_y)
         self.right_paddle.move(right_direction, delta_time, self.min_y, self.max_y)
+        self.ball.move(delta_time)
+
+
 
 
     def draw(self):
         draw_playfield(self.screen)
         self.left_paddle.draw(self.screen)
         self.right_paddle.draw(self.screen)
+        self.ball.draw(self.screen)
+
 
 def draw_playfield(screen):
     # Draw the playfield background

@@ -1,4 +1,5 @@
 import pygame
+from games.pong import ball
 from games.pong.pong import Pong
 
 
