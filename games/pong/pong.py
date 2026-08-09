@@ -19,7 +19,20 @@ class Pong:
         self.min_y = PADDLE_Y_BOUNDARY
 
     def update(self, delta_time):
-        self.left_paddle.move(-1, delta_time, self.min_y, self.max_y)  # Move left paddle up
+        left_direction = 0
+        right_direction = 0
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_w]:
+            left_direction -= 1
+        if keys[pygame.K_s]:
+            left_direction += 1
+        if keys[pygame.K_UP]:
+            right_direction -= 1
+        if keys[pygame.K_DOWN]:
+            right_direction += 1
+        self.left_paddle.move(left_direction, delta_time, self.min_y, self.max_y)
+        self.right_paddle.move(right_direction, delta_time, self.min_y, self.max_y)
+
 
     def draw(self):
         draw_playfield(self.screen)
