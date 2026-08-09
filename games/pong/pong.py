@@ -8,6 +8,7 @@ PADDLE_X_MARGIN = 50  # Distance from the edge of the screen to the paddle
 PADDLE_Y_BOUNDARY = 20  # Distance from the top and bottom of the screen to the paddle
 PONG_BOUNDARY_THICKNESS = 10  # Thickness of the top and bottom boundaries
 WINNING_SCORE = 5
+PONG_TEXT_COLOR = (0, 255, 0)
 
 
 class Pong:
@@ -27,6 +28,7 @@ class Pong:
         self.right_score = 0
         self.score_font = pygame.font.Font(None, 48)
         self.game_over = False
+        self.winnner = None
 
 
     def update(self, delta_time):
@@ -81,6 +83,11 @@ class Pong:
         self.left_paddle.draw(self.screen)
         self.right_paddle.draw(self.screen)
         self.ball.draw(self.screen)
+        if self.game_over:
+            winner_text = "Left Player Wins!" if self.left_score > self.right_score else "Right Player Wins!"
+            winner_surface = self.score_font.render(winner_text, True, PONG_TEXT_COLOR)
+            self.screen.blit(winner_surface, (self.screen.get_width() // 2 - winner_surface.get_width() // 2,
+                                              self.screen.get_height() // 4 - winner_surface.get_height() // 2))
 
 
 def draw_playfield(screen):
