@@ -1,13 +1,23 @@
 import pygame
+from games.pong.paddle import Paddle, PADDLE_WIDTH, PADDLE_HEIGHT
 
 PONG_BACKGROUND_COLOR = (0, 0, 0)
 PONG_LINE_COLOR = (255, 255, 255)
+PADDLE_MARGIN = 50  # Distance from the edge of the screen to the paddle
 
 class Pong:
     def __init__(self, screen):
         self.screen = screen
+        paddle_y = screen.get_height() // 2 - PADDLE_HEIGHT // 2
+        left_paddle_x = PADDLE_MARGIN
+        self.left_paddle = Paddle(left_paddle_x, paddle_y)
+        right_paddle_x = screen.get_width() - PADDLE_MARGIN - PADDLE_WIDTH
+        self.right_paddle = Paddle(right_paddle_x, paddle_y)
+
     def draw(self):
         draw_playfield(self.screen)
+        self.left_paddle.draw(self.screen)
+        self.right_paddle.draw(self.screen)
 
 def draw_playfield(screen):
     # Draw the playfield background

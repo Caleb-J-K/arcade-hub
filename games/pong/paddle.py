@@ -17,3 +17,15 @@ class Paddle:
 
     def draw(self, screen):
         pygame.draw.rect(screen, self.color, (self.x, self.y, self.width, self.height))
+
+    def move(self, screen,direction, delta_time):
+        if direction == "up":
+            self.y -= self.speed * delta_time
+        elif direction == "down":
+            self.y += self.speed * delta_time
+
+        # Ensure the paddle stays within the screen bounds
+        if self.y < 0:
+            self.y = 0
+        elif self.y + self.height > screen.get_height():
+            self.y = screen.get_height() - self.height
