@@ -22,3 +22,7 @@ class Ball:
 
     def get_rect(self):
         return pygame.Rect(self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
+
+    def reset_position(self, x, y):
+        self.x = x
+        self.y = y

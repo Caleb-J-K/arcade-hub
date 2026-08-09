@@ -19,9 +19,11 @@ class Pong:
         self.right_paddle = Paddle(right_paddle_x, paddle_y)
         self.max_y = screen.get_height() - PADDLE_HEIGHT - PADDLE_Y_BOUNDARY
         self.min_y = PADDLE_Y_BOUNDARY
-        ball_x = screen.get_width() // 2
-        ball_y = screen.get_height() // 2
-        self.ball = ball.Ball(ball_x, ball_y)
+        ball_x_start = screen.get_width() // 2
+        ball_y_start = screen.get_height() // 2
+        self.ball = ball.Ball(ball_x_start, ball_y_start)
+        self.left_score = 0
+        self.right_score = 0
 
 
     def update(self, delta_time):
@@ -49,9 +51,14 @@ class Pong:
         right_paddle_rect = self.right_paddle.get_rect()
         if ball_rect.colliderect(left_paddle_rect) and self.ball.speed_x < 0 or ball_rect.colliderect(right_paddle_rect):
             self.ball.speed_x *= -1  # Reverse the horizontal direction of the ball
-        
-
-
+        if self.ball.x < 0:
+            self.ball.reset_position(self.screen.get_width() // 2, self.screen.get_height() // 2)
+            self.right_score += 1
+            print(f"Left: {self.left_score} | Right: {self.right_score}")
+        elif self.ball.x > self.screen.get_width():
+            self.ball.reset_position(self.screen.get_width() // 2, self.screen.get_height() // 2)
+            self.left_score += 1
+            print(f"Left: {self.left_score} | Right: {self.right_score}")
 
 
     def draw(self):
