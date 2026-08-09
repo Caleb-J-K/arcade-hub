@@ -54,13 +54,27 @@ class Pong:
         self.ball.move(delta_time)
         top_edge = self.ball.y - self.ball.radius
         bottom_edge = self.ball.y + self.ball.radius
-        if top_edge < PONG_BOUNDARY_THICKNESS or bottom_edge > self.screen.get_height() - PONG_BOUNDARY_THICKNESS:
-            self.ball.speed_y *= -1  # Reverse the vertical direction of the ball
+        if bottom_edge > self.screen.get_height() - PONG_BOUNDARY_THICKNESS: 
+            self.ball.speed_y = abs(self.ball.speed_y) * -1  # Reverse the vertical direction of the ball
+            self.ball.y = self.screen.get_height() - PONG_BOUNDARY_THICKNESS - self.ball.radius # Moves ball back into play if it goes below the bottom boundary
+        if top_edge < PONG_BOUNDARY_THICKNESS: 
+            self.ball.speed_y = abs(self.ball.speed_y)  # Reverse the vertical direction of the ball
+            self.ball.y = PONG_BOUNDARY_THICKNESS + self.ball.radius # Moves ball back into play if it goes above the top boundary
         ball_rect = self.ball.get_rect()
         left_paddle_rect = self.left_paddle.get_rect()
         right_paddle_rect = self.right_paddle.get_rect()
-        if ball_rect.colliderect(left_paddle_rect) and self.ball.speed_x < 0 or ball_rect.colliderect(right_paddle_rect) and self.ball.speed_x > 0:
+
+
+
+        if ball_rect.colliderect(left_paddle_rect) and self.ball.speed_x < 0 and self.ball.x > left_paddle_rect.right:  # Check if the ball is moving towards the left paddle and is to the right of it
             self.ball.speed_x *= -1  # Reverse the horizontal direction of the ball
+            self.ball.x = left_paddle_rect.right + self.ball.radius  # Move the ball to the right of the left paddle
+        if ball_rect.colliderect(right_paddle_rect) and self.ball.speed_x > 0 and self.ball.x < right_paddle_rect.left:  # Check if the ball is moving towards the right paddle and is to the left of it
+            self.ball.speed_x *= -1  # Reverse the horizontal direction of the ball
+            self.ball.x = right_paddle_rect.left - self.ball.radius  # Move the ball to the left of the right paddle
+
+
+
         if self.ball.x < 0:
             self.ball.reset_position(self.screen.get_width() // 2, self.screen.get_height() // 2, x_direction=1)
             self.right_score += 1
