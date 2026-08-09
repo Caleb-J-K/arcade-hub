@@ -1,5 +1,5 @@
 import pygame
-from games.pong.pong import draw_playfield
+from games.pong.pong import Pong
 
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
@@ -13,7 +13,10 @@ def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Arcade Hub")
     clock = pygame.time.Clock()
+    pong_game = Pong(screen)
     running = True
+
+
 
     while running:
         # poll for events
@@ -23,7 +26,7 @@ def main():
                 running = False
 
         if ACTIVE_GAME == "Pong":
-            draw_playfield(screen)
+            pong_game.draw()
         else:
             screen.fill(BACKGROUND_COLOR)
 
