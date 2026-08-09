@@ -23,3 +23,6 @@ class Paddle:
             self.y = min_y
         elif self.y > max_y:
             self.y = max_y
+
+    def get_rect(self):
+        return pygame.Rect(self.x, self.y, self.width, self.height)

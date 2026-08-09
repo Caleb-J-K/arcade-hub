@@ -19,3 +19,6 @@ class Ball:
     def move(self, delta_time):
         self.x += self.speed_x * delta_time
         self.y += self.speed_y * delta_time
+
+    def get_rect(self):
+        return pygame.Rect(self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)

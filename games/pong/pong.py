@@ -6,6 +6,7 @@ PONG_BACKGROUND_COLOR = (0, 0, 0)
 PONG_LINE_COLOR = (255, 255, 255)
 PADDLE_X_MARGIN = 50  # Distance from the edge of the screen to the paddle
 PADDLE_Y_BOUNDARY = 20  # Distance from the top and bottom of the screen to the paddle
+PONG_BOUNDARY_THICKNESS = 10  # Thickness of the top and bottom boundaries
 
 
 class Pong:
@@ -37,7 +38,18 @@ class Pong:
             right_direction += 1
         self.left_paddle.move(left_direction, delta_time, self.min_y, self.max_y)
         self.right_paddle.move(right_direction, delta_time, self.min_y, self.max_y)
+
         self.ball.move(delta_time)
+        top_edge = self.ball.y - self.ball.radius
+        bottom_edge = self.ball.y + self.ball.radius
+        if top_edge < PONG_BOUNDARY_THICKNESS or bottom_edge > self.screen.get_height() - PONG_BOUNDARY_THICKNESS:
+            self.ball.speed_y *= -1  # Reverse the vertical direction of the ball
+        ball_rect = self.ball.get_rect()
+        left_paddle_rect = self.left_paddle.get_rect()
+        right_paddle_rect = self.right_paddle.get_rect()
+        if ball_rect.colliderect(left_paddle_rect) and self.ball.speed_x < 0 or ball_rect.colliderect(right_paddle_rect):
+            self.ball.speed_x *= -1  # Reverse the horizontal direction of the ball
+        
 
 
 
@@ -57,7 +69,7 @@ def draw_playfield(screen):
     pygame.draw.line(screen, PONG_LINE_COLOR, (screen.get_width() // 2, 0), (screen.get_width() // 2, screen.get_height()), 5)
 
     # Draw the top and bottom boundaries
-    pygame.draw.rect(screen, PONG_LINE_COLOR, (0, 0, screen.get_width(), 10))  # Top boundary
-    pygame.draw.rect(screen, PONG_LINE_COLOR, (0, screen.get_height() - 10, screen.get_width(), 10))  # Bottom boundary
+    pygame.draw.rect(screen, PONG_LINE_COLOR, (0, 0, screen.get_width(), PONG_BOUNDARY_THICKNESS))  # Top boundary
+    pygame.draw.rect(screen, PONG_LINE_COLOR, (0, screen.get_height() - PONG_BOUNDARY_THICKNESS, screen.get_width(), PONG_BOUNDARY_THICKNESS))  # Bottom boundary
 
 
