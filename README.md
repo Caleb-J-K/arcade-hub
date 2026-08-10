@@ -43,6 +43,7 @@ Run the application:
 python main.py
 
 ## Project Structure
+```text
 arcade-hub/
 ├── main.py
 ├── requirements.txt
@@ -52,6 +53,7 @@ arcade-hub/
         ├── pong.py
         ├── paddle.py
         └── ball.py
+```
 
 main.py manages the shared application window and game loop, while each game is responsible for its own state, update logic, and rendering.
 
